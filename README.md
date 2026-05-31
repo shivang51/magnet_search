@@ -10,5 +10,5 @@ magnet-search "Breaking Bad"
 ```
 
 ### Screenshot
-![Screenshot](Screenshots/screenshot.png)
+![Screenshot](screenshots/screenshot.png)
 
