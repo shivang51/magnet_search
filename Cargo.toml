@@ -1,0 +1,10 @@
+[package]
+name = "magnet_search"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+magneto = "0.2.4"
+open = "5.3.5"
+tokio = "1.52.3"
+urlencoding = "2.1.3"
