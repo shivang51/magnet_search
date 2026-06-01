@@ -72,7 +72,7 @@ async fn main() {
             let link = add_trackers(&selected_torrent.magnet_link, &selected_torrent.name);
             println!("Selected torrent: {}", selected_torrent.name);
 
-            match open::that(&link) {
+            match open::that_detached(&link) {
                 Ok(_) => println!("Opening magnet link {}", link),
                 Err(e) => eprintln!("Failed to open magnet link: {}", e),
             }
