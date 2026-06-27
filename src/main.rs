@@ -69,7 +69,7 @@ async fn main() {
             }
 
             let selected_torrent = &results[sel_id];
-            let link = add_trackers(&selected_torrent.magnet_link, &selected_torrent.name);
+            let link = add_trackers(&selected_torrent.magnet_link, &selected_torrent.name).await;
             println!("Selected torrent: {}", selected_torrent.name);
 
             match open::that_detached(&link) {
@@ -81,14 +81,26 @@ async fn main() {
     }
 }
 
-fn add_trackers(raw_magnet: &str, display_name: &str) -> String {
-    let stable_trackers = [
-        "udp://tracker.coppersurfer.tk:6969/announce",
-        "udp://tracker.leechers-paradise.org:6969/announce",
-        "udp://open.demonii.com:1337/announce",
-        "udp://p4p.arenabg.ch:1339/announce",
-        "udp://tracker.opentrackr.org:1337/announce",
-    ];
+async fn fetch_latest_trackers() -> Vec<String> {
+    const URL: &'static str =
+        "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt";
+
+    let response = reqwest::get(URL)
+        .await
+        .expect("Failed to fetch trackers list");
+
+    let body = response.text().await.expect("Failed to read response body");
+    let trackers: Vec<String> = body
+        .lines()
+        .filter(|line| !line.trim().is_empty())
+        .map(|line| String::from(line.trim()))
+        .collect();
+
+    trackers
+}
+
+async fn add_trackers(raw_magnet: &str, display_name: &str) -> String {
+    let stable_trackers = fetch_latest_trackers().await;
 
     let mut full_magnet = format!("{}&dn={}", raw_magnet, encode(display_name));
 
