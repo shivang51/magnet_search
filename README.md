@@ -9,6 +9,12 @@ magnet-search "Inception"
 magnet-search "Breaking Bad"
 ```
 
+### Installation
+```bash
+# After cloning the repo, run the following
+cargo install --path .
+```
+
 ### Screenshot
 ![Screenshot](screenshots/screenshot.png)
 
